@@ -78,7 +78,7 @@ button {
   z-index: -3;
   background:
     linear-gradient(180deg, rgba(18, 33, 27, 0.3), rgba(19, 35, 29, 0.52)),
-    url("assets/fundo-geral.jpg") center center / cover no-repeat;
+    url("./assets/fundo-geral.jpg") center center / cover no-repeat;
   transform: scale(1.03);
 }
 
@@ -112,8 +112,8 @@ button {
 .cover-card,
 .photo-frame,
 .confirmation-card {
-  backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 
 .button {
@@ -127,6 +127,9 @@ button {
   justify-content: center;
   gap: 10px;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
   transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition), background var(--transition);
   font-weight: 600;
   line-height: 1;
@@ -184,6 +187,7 @@ button {
 .cover-screen__backdrop {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background:
     radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 24%),
     linear-gradient(180deg, rgba(22, 39, 31, 0.72), rgba(22, 39, 31, 0.82));
@@ -210,9 +214,11 @@ button {
 
 .cover-card__image {
   object-fit: cover;
+  object-position: center center;
 }
 
 .cover-card__overlay {
+  pointer-events: none;
   background:
     linear-gradient(180deg, rgba(31, 77, 58, 0.08), rgba(31, 77, 58, 0.16) 40%, rgba(26, 43, 35, 0.55)),
     radial-gradient(circle at top center, rgba(255, 255, 255, 0.18), transparent 26%);
@@ -383,6 +389,7 @@ button {
   width: 240px;
   height: 240px;
   border-radius: 50%;
+  pointer-events: none;
   background: radial-gradient(circle, rgba(230, 201, 121, 0.14), transparent 68%);
 }
 
@@ -474,7 +481,7 @@ button {
   padding-left: 18px;
 }
 
-.clean-list li + li {
+.clean-list li+li {
   margin-top: 8px;
 }
 
@@ -543,6 +550,8 @@ button {
 }
 
 .confirmation-card {
+  position: relative;
+  z-index: 2;
   margin-top: 24px;
   padding: 24px;
   display: flex;
@@ -550,6 +559,11 @@ button {
   justify-content: space-between;
   gap: 18px;
   flex-wrap: wrap;
+}
+
+.confirmation-card .button {
+  position: relative;
+  z-index: 3;
 }
 
 .footer {
@@ -581,6 +595,7 @@ button {
 }
 
 @media (max-width: 1080px) {
+
   .gift-grid,
   .map-emphasis,
   .photo-showcase__grid,
@@ -602,6 +617,15 @@ button {
   .cover-card {
     height: min(92vh, 880px);
     border-radius: 28px;
+  }
+
+  /*
+    Ajuste principal da capa no celular.
+    Diminua ou aumente a porcentagem para mover a boneca
+    mais para o centro ou mais para a esquerda/direita.
+  */
+  .cover-card__image {
+    object-position: 26% center;
   }
 
   .cover-card__content,
@@ -641,6 +665,10 @@ button {
     width: calc(100% - 16px);
     bottom: 10px;
     padding: 18px;
+  }
+
+  .cover-card__image {
+    object-position: 23% center;
   }
 
   .cover-card__text,

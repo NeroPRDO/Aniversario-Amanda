@@ -49,6 +49,8 @@ const mapsButton = document.getElementById('mapsButton');
 const rsvpButton = document.getElementById('rsvpButton');
 const eventMap = document.getElementById('eventMap');
 
+let rsvpLink = '';
+
 /*
   ==========================================================
   LINKS E CONFIGURAÇÕES DINÂMICAS
@@ -80,11 +82,25 @@ function applyConfig() {
   }
 
   if (rsvpButton) {
-    rsvpButton.href = createWhatsAppLink(
+    rsvpLink = createWhatsAppLink(
       CONFIG.whatsappPhoneDigits,
       CONFIG.whatsappMessage
     );
+    rsvpButton.href = rsvpLink;
   }
+}
+
+
+function handleRsvpClick(event) {
+  if (!rsvpLink) return;
+
+  const isTouchDevice =
+    window.matchMedia('(hover: none)').matches || navigator.maxTouchPoints > 0;
+
+  if (!isTouchDevice) return;
+
+  event.preventDefault();
+  window.location.href = rsvpLink;
 }
 
 /*
@@ -165,6 +181,7 @@ skipIntroButton?.addEventListener('click', revealSite);
 
 fallbackEnterButton?.addEventListener('click', revealSite);
 fallbackBackButton?.addEventListener('click', showCover);
+rsvpButton?.addEventListener('click', handleRsvpClick);
 
 introVideo?.addEventListener('ended', () => {
   setTimeout(revealSite, CONFIG.videoEndDelay);
