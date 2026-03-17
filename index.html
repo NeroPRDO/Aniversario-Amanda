@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amanda Bortolan | 15 anos</title>
+    <meta name="description" content="Convite digital de 15 anos da Amanda Bortolan." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body class="is-locked">
+    <canvas id="particleCanvas" aria-hidden="true"></canvas>
+
+    <div class="site-background" aria-hidden="true"></div>
+    <div class="site-background-glow" aria-hidden="true"></div>
+
+    <!-- CAPA INICIAL -->
+    <section class="cover-screen is-active" id="coverScreen" aria-label="Capa do convite">
+        <div class="cover-screen__backdrop"></div>
+
+        <div class="cover-card">
+            <img id="coverImage" class="cover-card__image" src="./assets/convite-capa.jpg"
+                alt="Convite principal de Amanda Bortolan" />
+
+            <div class="cover-card__overlay"></div>
+
+            <div class="cover-card__content">
+                <p class="eyebrow">Amanda Bortolan</p>
+                <h1>15 anos</h1>
+                <p class="cover-card__text">
+                    Um convite especial, preparado com delicadeza, brilho e carinho.
+                </p>
+
+                <div class="cover-card__actions">
+                    <button class="button button--gold" id="watchIntroButton">
+                        Assistir abertura
+                    </button>
+                    <button class="button button--ghost" id="skipIntroButton">
+                        Entrar no convite
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VÍDEO DE ABERTURA -->
+    <section class="video-overlay" id="videoOverlay" aria-label="Vídeo de abertura">
+        <video id="introVideo" class="video-overlay__video" playsinline preload="metadata">
+            <source src="./assets/abertura-amanda-15.mp4" type="video/mp4" />
+        </video>
+
+        <div class="video-overlay__fallback glass-panel" id="videoFallback">
+            <p class="eyebrow">Vídeo de abertura</p>
+            <h2>Arquivo ainda não adicionado</h2>
+            <p>
+                Assim que você exportar o MP4 na Sora, salve o arquivo em
+                <strong>assets/abertura-amanda.mp4</strong>.
+            </p>
+
+            <div class="video-overlay__actions">
+                <button class="button button--gold" id="fallbackEnterButton">
+                    Entrar no convite
+                </button>
+                <button class="button button--ghost" id="fallbackBackButton">
+                    Voltar para a capa
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SITE -->
+    <main class="site-shell" id="siteShell">
+        <header class="hero container reveal">
+            <div class="hero__content glass-panel">
+                <p class="eyebrow">15 anos</p>
+                <h2 class="hero__name">Amanda <span>Bortolan</span></h2>
+                <p class="hero__message">
+                    Com alegria no coração, convido você para celebrar comigo este momento tão
+                    especial. Sua presença vai tornar esta noite ainda mais bonita e inesquecível.
+                </p>
+
+                <div class="hero__actions">
+                    <a class="button button--gold" href="#detalhes">Ver detalhes</a>
+                    <a class="button button--ghost button--ghost-dark" href="#confirmacao">
+                        Confirmar presença
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <section class="section container reveal" id="detalhes">
+            <div class="section-card">
+                <div class="section-heading">
+                    <p class="eyebrow">Informações</p>
+                    <h3>Detalhes da celebração</h3>
+                    <p class="section-text">
+                        Tudo o que você precisa para este dia especial, reunido em um só lugar.
+                    </p>
+                </div>
+
+                <div class="info-grid info-grid--two">
+                    <article class="info-box">
+                        <span class="info-box__label">Data</span>
+                        <h4>Sábado, 18 de julho</h4>
+                        <p>Recepção a partir das 18h00.</p>
+                    </article>
+
+                    <article class="info-box">
+                        <span class="info-box__label">Local</span>
+                        <h4>Campo Verde Festas e Eventos</h4>
+                        <p>
+                            Rua João Cecato Neto - Bateias<br />
+                            Campo Largo - PR
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOTO 1 -->
+        <section class="photo-showcase container reveal">
+            <div class="photo-showcase__grid">
+                <div class="photo-showcase__content">
+                    <p class="eyebrow">Recordações</p>
+                    <h3>Um dia feito para guardar na memória</h3>
+                    <p>
+                        Este espaço foi deixado para uma foto especial da Amanda. Você pode usar uma
+                        imagem delicada, elegante e marcante para enriquecer ainda mais o convite.
+                    </p>
+                </div>
+
+                <div class="photo-frame">
+                    <img src="./assets/foto-amanda-01.jpg" alt="Foto da Amanda 1" />
+                </div>
+            </div>
+        </section>
+
+        <section class="section container reveal" id="local">
+            <div class="section-card section-card--map">
+                <div class="section-heading">
+                    <p class="eyebrow">Localização</p>
+                    <h3>Como chegar</h3>
+                    <p class="section-text">
+                        O Campo Verde Festas e Eventos oferece um ambiente especial para esta
+                        celebração, com espaço acolhedor e localização fácil de acessar. Confira o
+                        mapa abaixo e abra a rota no Google Maps quando desejar.
+                    </p>
+                </div>
+
+                <div class="map-emphasis">
+                    <div class="map-card map-card--large">
+                        <iframe id="eventMap" title="Mapa do evento" loading="lazy" src="" allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+
+                    <aside class="map-side">
+                        <article class="info-box">
+                            <span class="info-box__label">Endereço</span>
+                            <h4>Campo Verde Festas e Eventos</h4>
+                            <p>
+                                Rua João Cecato Neto - Bateias<br />
+                                Campo Largo - 83648-000
+                            </p>
+                        </article>
+
+                        <article class="info-box info-box--accent">
+                            <span class="info-box__label">Rota</span>
+                            <h4>Abrir no Google Maps</h4>
+                            <p>
+                                Toque no botão abaixo para abrir a localização diretamente no aplicativo
+                                de mapas.
+                            </p>
+                            <a class="button button--gold button--small" id="mapsButton" href="#" target="_blank"
+                                rel="noopener noreferrer">
+                                Abrir no Maps
+                            </a>
+                        </article>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOTO 2 -->
+        <section class="photo-showcase photo-showcase--reverse container reveal">
+            <div class="photo-showcase__grid">
+                <div class="photo-frame">
+                    <img src="./assets/foto-amanda-02.jpg" alt="Foto da Amanda 2" />
+                </div>
+
+                <div class="photo-showcase__content">
+                    <p class="eyebrow">Brilho</p>
+                    <h3>Mais um espaço para destacar a Amanda</h3>
+                    <p>
+                        Aqui você pode usar outra foto em destaque, criando um respiro bonito entre
+                        os blocos e deixando o convite ainda mais pessoal.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section container reveal" id="presentes">
+            <div class="section-card">
+                <div class="section-heading">
+                    <p class="eyebrow">Sugestões</p>
+                    <h3>Presentes</h3>
+                    <p class="section-text">
+                        Sua presença já será muito especial. Para quem desejar presentear a Amanda,
+                        seguem algumas ideias delicadas e úteis para esse novo ciclo.
+                    </p>
+                </div>
+
+                <div class="gift-grid">
+                    <article class="info-box">
+                        <span class="info-box__label">Tamanhos</span>
+                        <h4>Roupas e acessórios</h4>
+                        <p>
+                            Calçados tamanho 36.<br />
+                            Roupas em geral: P ou 36/38.
+                        </p>
+                    </article>
+
+                    <article class="info-box">
+                        <span class="info-box__label">Ideias de presente</span>
+                        <ul class="clean-list">
+                            <li>Body splash ou perfume</li>
+                            <li>Semi joias em prata</li>
+                            <li>Cosméticos e maquiagem</li>
+                            <li>Kits de autocuidado</li>
+                            <li>Bolsa pequena ou acessórios delicados</li>
+                        </ul>
+                    </article>
+
+                    <article class="info-box">
+                        <span class="info-box__label">Outras opções</span>
+                        <ul class="clean-list">
+                            <li>Relógio smartwatch</li>
+                            <li>Vale-presente</li>
+                            <li>Itens de decoração delicados</li>
+                            <li>Necessaire ou organizadores</li>
+                            <li>Canecas, caixas ou lembranças personalizadas</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOTO 3 -->
+        <section class="photo-showcase container reveal">
+            <div class="photo-showcase__grid">
+                <div class="photo-showcase__content">
+                    <p class="eyebrow">Encanto</p>
+                    <h3>Uma terceira imagem para fechar com personalidade</h3>
+                    <p>
+                        Este terceiro espaço ajuda a dar ritmo ao site e funciona muito bem com uma
+                        foto vertical da Amanda.
+                    </p>
+                </div>
+
+                <div class="photo-frame">
+                    <img src="./assets/foto-amanda-03.jpg" alt="Foto da Amanda 3" />
+                </div>
+            </div>
+        </section>
+
+        <section class="section container reveal" id="confirmacao">
+            <div class="section-card">
+                <div class="section-heading">
+                    <p class="eyebrow">Presença</p>
+                    <h3>Confirme até 03 de julho</h3>
+                    <p class="section-text">
+                        A confirmação de presença será feita pelo WhatsApp. Ao tocar no botão abaixo,
+                        você será levado diretamente para o contato da mãe da Amanda, com uma mensagem
+                        pronta para ser enviada.
+                    </p>
+                </div>
+
+                <div class="confirmation-card">
+                    <div>
+                        <h4>Confirmar presença</h4>
+                        <p>
+                            Basta abrir a conversa, conferir a mensagem e enviar.
+                        </p>
+                    </div>
+
+                    <a class="button button--gold" id="rsvpButton" href="#" target="_blank" rel="noopener noreferrer">
+                        Confirmar pelo WhatsApp
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer container reveal">
+            <div class="footer__inner glass-panel">
+                <p>Feito com carinho para celebrar uma noite inesquecível.</p>
+                <strong>Amanda Bortolan • 15 anos</strong>
+            </div>
+        </footer>
+    </main>
+
+    <script src="./particles.js"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>
