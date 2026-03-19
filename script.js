@@ -6,7 +6,8 @@
 */
 
 const CONFIG = {
-  coverImagePath: 'assets/convite-capa.jpg',
+  coverImageDesktopPath: 'assets/convite-capa-desktop.jpg',
+  coverImageMobilePath: 'assets/convite-capa-mobile.jpg',
   introVideoDesktopPath: 'assets/abertura-amanda-desktop.mp4',
   introVideoMobilePath: 'assets/abertura-amanda-mobile.mp4',
   backgroundImagePath: 'assets/fundo-geral.jpg',
@@ -40,7 +41,8 @@ const coverScreen = document.getElementById('coverScreen');
 const videoOverlay = document.getElementById('videoOverlay');
 const siteShell = document.getElementById('siteShell');
 
-const coverImage = document.getElementById('coverImage');
+const coverImageDesktopSource = document.getElementById('coverImageDesktopSource');
+const coverImageMobileSource = document.getElementById('coverImageMobileSource');
 const watchIntroButton = document.getElementById('watchIntroButton');
 const skipIntroButton = document.getElementById('skipIntroButton');
 
@@ -76,8 +78,16 @@ function createWhatsAppLink(phoneDigits, message) {
 }
 
 function applyConfig() {
-  if (coverImage && CONFIG.coverImagePath) {
-    coverImage.src = CONFIG.coverImagePath;
+  if (coverImageDesktopSource && CONFIG.coverImageDesktopPath) {
+    coverImageDesktopSource.srcset = CONFIG.coverImageDesktopPath;
+  }
+
+  if (coverImageMobileSource && CONFIG.coverImageMobilePath) {
+    coverImageMobileSource.srcset = CONFIG.coverImageMobilePath;
+  }
+
+  if (coverImage && CONFIG.coverImageDesktopPath) {
+    coverImage.src = CONFIG.coverImageDesktopPath;
   }
 
   const desktopSource = introVideoDesktop?.querySelector('source');
