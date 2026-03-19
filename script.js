@@ -2,13 +2,15 @@
   ==========================================================
   CONFIGURAÇÕES PRINCIPAIS DO SITE
   ==========================================================
-  Altere aqui os links, caminhos e mensagem do WhatsApp.
+  Altere aqui os links, caminhos, mensagem do WhatsApp e a música.
 */
 
 const CONFIG = {
-  coverImagePath: './assets/convite-capa.jpg',
-  introVideoPath: './assets/abertura-amanda.mp4',
-  backgroundImagePath: './assets/fundo-geral.jpg',
+  coverImagePath: 'assets/convite-capa.jpg',
+  introVideoDesktopPath: 'assets/abertura-amanda-desktop.mp4',
+  introVideoMobilePath: 'assets/abertura-amanda-mobile.mp4',
+  backgroundImagePath: 'assets/fundo-geral.jpg',
+  backgroundAudioPath: 'assets/trilha-site.mp3',
 
   mapsLink:
     'https://www.google.com/maps/place/Campo+Verde+Festas+e+Eventos/@-25.3487474,-49.5089495,17z/data=!4m6!3m5!1s0x94dd236a73d05c59:0x5b82aa65365ffb58!8m2!3d-25.3489704!4d-49.5081448!16s%2Fg%2F11cllkbhhd?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D',
@@ -22,6 +24,8 @@ const CONFIG = {
     'Olá! Gostaria de confirmar minha presença na festa de 15 anos da Amanda Bortolan.',
 
   videoEndDelay: 700,
+  videoFadeOutDuration: 850,
+  siteRevealDelay: 120,
 };
 
 /*
@@ -40,16 +44,25 @@ const coverImage = document.getElementById('coverImage');
 const watchIntroButton = document.getElementById('watchIntroButton');
 const skipIntroButton = document.getElementById('skipIntroButton');
 
-const introVideo = document.getElementById('introVideo');
+const introVideoDesktop = document.getElementById('introVideoDesktop');
+const introVideoMobile = document.getElementById('introVideoMobile');
 const videoFallback = document.getElementById('videoFallback');
 const fallbackEnterButton = document.getElementById('fallbackEnterButton');
 const fallbackBackButton = document.getElementById('fallbackBackButton');
+
+const backgroundAudio = document.getElementById('backgroundAudio');
+const audioToggleButton = document.getElementById('audioToggleButton');
+const audioToggleLabel = audioToggleButton?.querySelector('.audio-toggle__label');
 
 const mapsButton = document.getElementById('mapsButton');
 const rsvpButton = document.getElementById('rsvpButton');
 const eventMap = document.getElementById('eventMap');
 
-let rsvpLink = '';
+let activeIntroVideo = null;
+let isRevealingSite = false;
+let revealObserverInitialized = false;
+let audioHasBeenUnlocked = false;
+let audioShouldBePlaying = true;
 
 /*
   ==========================================================
@@ -67,10 +80,22 @@ function applyConfig() {
     coverImage.src = CONFIG.coverImagePath;
   }
 
-  const videoSource = introVideo?.querySelector('source');
-  if (videoSource && CONFIG.introVideoPath) {
-    videoSource.src = CONFIG.introVideoPath;
-    introVideo.load();
+  const desktopSource = introVideoDesktop?.querySelector('source');
+  if (desktopSource && CONFIG.introVideoDesktopPath) {
+    desktopSource.src = CONFIG.introVideoDesktopPath;
+    introVideoDesktop.load();
+  }
+
+  const mobileSource = introVideoMobile?.querySelector('source');
+  if (mobileSource && CONFIG.introVideoMobilePath) {
+    mobileSource.src = CONFIG.introVideoMobilePath;
+    introVideoMobile.load();
+  }
+
+  const audioSource = backgroundAudio?.querySelector('source');
+  if (audioSource && CONFIG.backgroundAudioPath) {
+    audioSource.src = CONFIG.backgroundAudioPath;
+    backgroundAudio.load();
   }
 
   if (mapsButton) {
@@ -82,25 +107,114 @@ function applyConfig() {
   }
 
   if (rsvpButton) {
-    rsvpLink = createWhatsAppLink(
+    rsvpButton.href = createWhatsAppLink(
       CONFIG.whatsappPhoneDigits,
       CONFIG.whatsappMessage
     );
-    rsvpButton.href = rsvpLink;
+  }
+
+  updateAudioToggleUI();
+}
+
+/*
+  ==========================================================
+  CONTROLE DE ROLAGEM / TOPO DA PÁGINA
+  ==========================================================
+  O navegador pode tentar restaurar a rolagem anterior quando a página abre.
+  Como a capa é fixa e o site real já está por trás dela, isso pode dar a
+  impressão de que o conteúdo abre "um pouco scrollado". Por isso forçamos
+  o topo sempre que a experiência muda de etapa.
+*/
+
+function forceScrollTop() {
+  document.activeElement?.blur?.();
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
+
+  setTimeout(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, 120);
+}
+
+/*
+  ==========================================================
+  ÁUDIO DO SITE
+  ==========================================================
+  GitHub Pages suporta áudio normalmente em um site estático.
+  O ideal é usar um arquivo local em /assets, como MP3.
+  YouTube e Spotify não são a melhor opção aqui por autoplay,
+  embed, privacidade e controle visual.
+*/
+
+function updateAudioToggleUI() {
+  if (!audioToggleButton) return;
+
+  const isPlaying = !!backgroundAudio && !backgroundAudio.paused && !backgroundAudio.ended;
+  audioToggleButton.classList.toggle('is-paused', !isPlaying);
+  audioToggleButton.setAttribute('aria-pressed', String(isPlaying));
+  audioToggleButton.setAttribute('aria-label', isPlaying ? 'Pausar música' : 'Tocar música');
+  audioToggleButton.title = isPlaying ? 'Pausar música' : 'Tocar música';
+
+  if (audioToggleLabel) {
+    audioToggleLabel.textContent = isPlaying ? 'Pausar música' : 'Tocar música';
   }
 }
 
+function showAudioToggle() {
+  audioToggleButton?.classList.add('is-visible');
+}
 
-function handleRsvpClick(event) {
-  if (!rsvpLink) return;
+function hideAudioToggle() {
+  audioToggleButton?.classList.remove('is-visible');
+}
 
-  const isTouchDevice =
-    window.matchMedia('(hover: none)').matches || navigator.maxTouchPoints > 0;
+async function tryStartBackgroundAudio() {
+  if (!backgroundAudio || !audioShouldBePlaying) {
+    updateAudioToggleUI();
+    return;
+  }
 
-  if (!isTouchDevice) return;
+  try {
+    backgroundAudio.volume = 1;
+    await backgroundAudio.play();
+    audioHasBeenUnlocked = true;
+  } catch (error) {
+    // Alguns navegadores exigem gesto explícito do usuário para liberar áudio.
+  }
 
-  event.preventDefault();
-  window.location.href = rsvpLink;
+  updateAudioToggleUI();
+}
+
+function prepareAudioFromUserGesture() {
+  audioHasBeenUnlocked = true;
+  audioShouldBePlaying = true;
+  showAudioToggle();
+  tryStartBackgroundAudio();
+}
+
+function toggleBackgroundAudio() {
+  if (!backgroundAudio) return;
+
+  showAudioToggle();
+
+  if (backgroundAudio.paused) {
+    audioShouldBePlaying = true;
+    tryStartBackgroundAudio();
+    return;
+  }
+
+  audioShouldBePlaying = false;
+  backgroundAudio.pause();
+  updateAudioToggleUI();
 }
 
 /*
@@ -109,34 +223,95 @@ function handleRsvpClick(event) {
   ==========================================================
 */
 
+function getActiveIntroVideo() {
+  return window.matchMedia('(max-width: 767px)').matches
+    ? introVideoMobile
+    : introVideoDesktop;
+}
+
+function resetIntroVideos() {
+  [introVideoDesktop, introVideoMobile].forEach((video) => {
+    if (!video) return;
+
+    video.pause();
+
+    try {
+      video.currentTime = 0;
+    } catch (error) {
+      // Alguns navegadores móveis podem reclamar se o metadata ainda não carregou.
+    }
+  });
+}
+
+function finishVideoOverlayTransition() {
+  videoOverlay.classList.remove('is-finishing');
+  videoOverlay.classList.remove('is-active');
+  activeIntroVideo = null;
+  resetIntroVideos();
+  isRevealingSite = false;
+  forceScrollTop();
+}
+
 function revealSite() {
-  coverScreen.classList.remove('is-active');
-  videoOverlay.classList.remove('is-active');
+  if (isRevealingSite) return;
 
+  const overlayWasActive = videoOverlay.classList.contains('is-active');
+  isRevealingSite = true;
+
+  forceScrollTop();
+  coverScreen.classList.remove('is-active');
   body.classList.remove('is-locked');
-  siteShell.classList.add('is-visible');
+  showAudioToggle();
 
-  runRevealAnimation();
-}
+  setTimeout(() => {
+    forceScrollTop();
+    siteShell.classList.add('is-visible');
+    runRevealAnimation();
+  }, CONFIG.siteRevealDelay);
 
-function showCover() {
-  videoOverlay.classList.remove('is-active');
-  coverScreen.classList.add('is-active');
-}
-
-function openVideoIntro() {
-  coverScreen.classList.remove('is-active');
-  videoOverlay.classList.add('is-active');
-  videoFallback.style.display = 'none';
-
-  const hasVideoSource = introVideo?.querySelector('source')?.getAttribute('src');
-
-  if (!hasVideoSource) {
-    videoFallback.style.display = 'block';
+  if (!overlayWasActive) {
+    isRevealingSite = false;
+    forceScrollTop();
     return;
   }
 
-  const playAttempt = introVideo.play();
+  videoOverlay.classList.add('is-finishing');
+
+  setTimeout(finishVideoOverlayTransition, CONFIG.videoFadeOutDuration);
+}
+
+function showCover() {
+  activeIntroVideo = null;
+  isRevealingSite = false;
+  resetIntroVideos();
+  videoOverlay.classList.remove('is-finishing');
+  videoOverlay.classList.remove('is-active');
+  siteShell.classList.remove('is-visible');
+  coverScreen.classList.add('is-active');
+  body.classList.add('is-locked');
+  hideAudioToggle();
+  forceScrollTop();
+}
+
+function openVideoIntro() {
+  forceScrollTop();
+  coverScreen.classList.remove('is-active');
+  videoOverlay.classList.remove('is-finishing');
+  videoOverlay.classList.add('is-active');
+  videoFallback.style.display = 'none';
+
+  resetIntroVideos();
+
+  activeIntroVideo = getActiveIntroVideo();
+  const hasVideoSource = activeIntroVideo?.querySelector('source')?.getAttribute('src');
+
+  if (!hasVideoSource) {
+    videoFallback.style.display = 'block';
+    showAudioToggle();
+    return;
+  }
+
+  const playAttempt = activeIntroVideo.play();
 
   if (playAttempt && typeof playAttempt.then === 'function') {
     playAttempt.catch(() => {
@@ -152,6 +327,9 @@ function openVideoIntro() {
 */
 
 function runRevealAnimation() {
+  if (revealObserverInitialized) return;
+
+  revealObserverInitialized = true;
   const revealItems = document.querySelectorAll('.reveal');
 
   const observer = new IntersectionObserver(
@@ -176,21 +354,55 @@ function runRevealAnimation() {
   ==========================================================
 */
 
-watchIntroButton?.addEventListener('click', openVideoIntro);
-skipIntroButton?.addEventListener('click', revealSite);
-
-fallbackEnterButton?.addEventListener('click', revealSite);
-fallbackBackButton?.addEventListener('click', showCover);
-rsvpButton?.addEventListener('click', handleRsvpClick);
-
-introVideo?.addEventListener('ended', () => {
-  setTimeout(revealSite, CONFIG.videoEndDelay);
+watchIntroButton?.addEventListener('click', () => {
+  prepareAudioFromUserGesture();
+  openVideoIntro();
 });
 
-introVideo?.addEventListener('error', () => {
-  videoFallback.style.display = 'block';
+skipIntroButton?.addEventListener('click', () => {
+  prepareAudioFromUserGesture();
+  revealSite();
+});
+
+fallbackEnterButton?.addEventListener('click', () => {
+  prepareAudioFromUserGesture();
+  revealSite();
+});
+
+fallbackBackButton?.addEventListener('click', showCover);
+
+audioToggleButton?.addEventListener('click', toggleBackgroundAudio);
+
+backgroundAudio?.addEventListener('play', updateAudioToggleUI);
+backgroundAudio?.addEventListener('pause', updateAudioToggleUI);
+backgroundAudio?.addEventListener('ended', updateAudioToggleUI);
+
+[introVideoDesktop, introVideoMobile].forEach((video) => {
+  video?.addEventListener('ended', () => {
+    if (video !== activeIntroVideo) return;
+    setTimeout(revealSite, CONFIG.videoEndDelay);
+  });
+
+  video?.addEventListener('error', () => {
+    if (video !== activeIntroVideo && activeIntroVideo !== null) return;
+    videoFallback.style.display = 'block';
+  });
+});
+
+window.addEventListener('pageshow', forceScrollTop);
+window.addEventListener('load', forceScrollTop);
+window.addEventListener('resize', () => {
+  if (coverScreen.classList.contains('is-active') || videoOverlay.classList.contains('is-active')) {
+    forceScrollTop();
+  }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
   applyConfig();
+  hideAudioToggle();
+  forceScrollTop();
 });

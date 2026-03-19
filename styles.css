@@ -163,6 +163,58 @@ button {
   padding: 12px 20px;
 }
 
+.audio-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+  background: rgba(255, 251, 247, 0.82);
+  color: var(--emerald-dark);
+  box-shadow: 0 12px 28px rgba(31, 77, 58, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease, background 0.35s ease, color 0.35s ease;
+}
+
+.audio-toggle.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.audio-toggle:hover {
+  transform: translateY(-2px);
+}
+
+.audio-toggle.is-paused {
+  background: rgba(31, 77, 58, 0.78);
+  color: var(--white);
+}
+
+.audio-toggle__icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.audio-toggle__label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
 .cover-screen,
 .video-overlay {
   position: fixed;
@@ -275,13 +327,49 @@ button {
 }
 
 .video-overlay {
+  padding: 0;
+  background: #000;
+  overflow: hidden;
+  will-change: opacity;
+}
+
+.video-overlay.is-finishing {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+}
+
+.video-overlay__media {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
   background: #000;
 }
 
 .video-overlay__video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
+  background: #000;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: opacity, transform, filter;
+  transition: opacity 0.85s ease, transform 0.85s ease, filter 0.85s ease;
+}
+
+.video-overlay.is-finishing .video-overlay__video {
+  opacity: 0;
+  transform: scale(1.012);
+  filter: brightness(0.96);
+}
+
+.video-overlay__video--mobile {
+  display: none;
 }
 
 .video-overlay__fallback {
@@ -316,7 +404,7 @@ button {
   opacity: 0;
   transform: translateY(18px);
   pointer-events: none;
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: opacity 0.95s ease, transform 0.95s ease;
   padding: 24px 0 42px;
 }
 
@@ -686,5 +774,36 @@ button {
 
   .site-shell {
     padding-top: 18px;
+  }
+
+  .audio-toggle {
+    right: 12px;
+    bottom: 12px;
+    min-height: 44px;
+    padding: 11px 14px;
+  }
+
+  .audio-toggle__label {
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .video-overlay__video--desktop {
+    display: none;
+  }
+
+  .video-overlay__video--mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .video-overlay__video--desktop {
+    display: block;
+  }
+
+  .video-overlay__video--mobile {
+    display: none;
   }
 }

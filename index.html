@@ -51,16 +51,33 @@
 
     <!-- VÍDEO DE ABERTURA -->
     <section class="video-overlay" id="videoOverlay" aria-label="Vídeo de abertura">
-        <video id="introVideo" class="video-overlay__video" playsinline preload="metadata">
-            <source src="./assets/abertura-amanda.mp4" type="video/mp4" />
-        </video>
+        <div class="video-overlay__media" aria-hidden="true">
+            <video
+                id="introVideoDesktop"
+                class="video-overlay__video video-overlay__video--desktop"
+                playsinline
+                preload="auto"
+                muted>
+                <source src="./assets/abertura-amanda-desktop.mp4" type="video/mp4" />
+            </video>
+
+            <video
+                id="introVideoMobile"
+                class="video-overlay__video video-overlay__video--mobile"
+                playsinline
+                preload="auto"
+                muted>
+                <source src="./assets/abertura-amanda-mobile.mp4" type="video/mp4" />
+            </video>
+        </div>
 
         <div class="video-overlay__fallback glass-panel" id="videoFallback">
             <p class="eyebrow">Vídeo de abertura</p>
             <h2>Arquivo ainda não adicionado</h2>
             <p>
-                Salve o arquivo em:
-                <strong>assets/abertura-amanda.mp4</strong>.
+                Salve os arquivos em:<br />
+                <strong>assets/abertura-amanda-desktop.mp4</strong><br />
+                <strong>assets/abertura-amanda-mobile.mp4</strong>
             </p>
 
             <div class="video-overlay__actions">
@@ -73,6 +90,21 @@
             </div>
         </div>
     </section>
+
+
+    <audio id="backgroundAudio" preload="auto" loop>
+        <source src="./assets/trilha-site.mp3" type="audio/mpeg" />
+    </audio>
+
+    <button
+        class="audio-toggle"
+        id="audioToggleButton"
+        type="button"
+        aria-label="Pausar música"
+        aria-pressed="true"
+        title="Pausar música">
+        <span class="audio-toggle__icon" aria-hidden="true">♪</span>
+    </button>
 
     <!-- SITE -->
     <main class="site-shell" id="siteShell">
