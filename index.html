@@ -12,31 +12,31 @@
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
-    </head>
-    
-    <body class="is-locked">
-        <canvas id="particleCanvas" aria-hidden="true"></canvas>
-    
-        <div class="site-background" aria-hidden="true"></div>
-        <div class="site-background-glow" aria-hidden="true"></div>
-    
-        <!-- CAPA INICIAL -->
-        <section class="cover-screen is-active" id="coverScreen" aria-label="Capa do convite">
-            <div class="cover-screen__backdrop"></div>
-    
-            <div class="cover-card">
-                <picture class="cover-card__picture">
-                    <source id="coverImageDesktopSource" media="(min-width: 768px)"
-                        srcset="./assets/convite-capa-desktop.jpg" />
-    
-                    <source id="coverImageMobileSource" media="(max-width: 767px)"
-                        srcset="./assets/convite-capa-mobile.jpg" />
-    
-                    <img id="coverImage" class="cover-card__image" src="./assets/convite-capa-desktop.jpg"
-                        alt="Convite principal de Amanda Bortolan" />
-                </picture>
-    
-                <div class="cover-card__overlay"></div>
+</head>
+
+<body class="is-locked">
+    <canvas id="particleCanvas" aria-hidden="true"></canvas>
+
+    <div class="site-background" aria-hidden="true"></div>
+    <div class="site-background-glow" aria-hidden="true"></div>
+
+    <!-- CAPA INICIAL -->
+    <section class="cover-screen is-active" id="coverScreen" aria-label="Capa do convite">
+        <div class="cover-screen__backdrop"></div>
+
+        <div class="cover-card">
+            <picture class="cover-card__picture">
+                <source id="coverImageDesktopSource" media="(min-width: 768px)"
+                    srcset="./assets/convite-capa-desktop.jpg" />
+
+                <source id="coverImageMobileSource" media="(max-width: 767px)"
+                    srcset="./assets/convite-capa-mobile.jpg" />
+
+                <img id="coverImage" class="cover-card__image" src="./assets/convite-capa-desktop.jpg"
+                    alt="Convite principal de Amanda Bortolan" />
+            </picture>
+
+            <div class="cover-card__overlay"></div>
 
             <div class="cover-card__content">
                 <p class="eyebrow">15 Anos</p>
@@ -59,21 +59,13 @@
     <!-- VÍDEO DE ABERTURA -->
     <section class="video-overlay" id="videoOverlay" aria-label="Vídeo de abertura">
         <div class="video-overlay__media" aria-hidden="true">
-            <video
-                id="introVideoDesktop"
-                class="video-overlay__video video-overlay__video--desktop"
-                playsinline
-                preload="auto"
-                muted>
+            <video id="introVideoDesktop" class="video-overlay__video video-overlay__video--desktop" playsinline
+                preload="auto" muted>
                 <source src="./assets/abertura-amanda-desktop.mp4" type="video/mp4" />
             </video>
 
-            <video
-                id="introVideoMobile"
-                class="video-overlay__video video-overlay__video--mobile"
-                playsinline
-                preload="auto"
-                muted>
+            <video id="introVideoMobile" class="video-overlay__video video-overlay__video--mobile" playsinline
+                preload="auto" muted>
                 <source src="./assets/abertura-amanda-mobile.mp4" type="video/mp4" />
             </video>
         </div>
@@ -103,12 +95,7 @@
         <source src="./assets/trilha-site.mp3" type="audio/mpeg" />
     </audio>
 
-    <button
-        class="audio-toggle"
-        id="audioToggleButton"
-        type="button"
-        aria-label="Pausar música"
-        aria-pressed="true"
+    <button class="audio-toggle" id="audioToggleButton" type="button" aria-label="Pausar música" aria-pressed="true"
         title="Pausar música">
         <span class="audio-toggle__icon" aria-hidden="true">♪</span>
     </button>
@@ -137,7 +124,7 @@
             <div class="section-card">
                 <div class="section-heading">
                     <p class="eyebrow">Informações</p>
-                    <h3>Detalhes da celebração</h3>
+                    <h3>Detalhes da celebração:</h3>
                     <p class="section-text">
                         Tudo para tornar este dia especial melhor ainda!
                     </p>
@@ -147,7 +134,7 @@
                     <article class="info-box">
                         <span class="info-box__label">Data</span>
                         <h4>Sábado, 18 de julho</h4>
-                        <p>Recepção a partir das 18h00.</p>
+                        <p>Recepção a partir das 17h30.</p>
                     </article>
 
                     <article class="info-box">
@@ -166,15 +153,16 @@
         <section class="photo-showcase container reveal">
             <div class="photo-showcase__grid">
                 <div class="photo-showcase__content">
-                    <p class="eyebrow">Recordações</p>
-                    <h3>Um dia feito para guardar na memória</h3>
+                    <p class="eyebrow">Recordações:</p>
+                    <h3>Um dia feito para guardar na memória!</h3>
                     <p>
-                        Este espaço foi deixado para uma foto especial da Amanda.
+                        “A vida não precisa ser perfeita para ser bonita, basta ter momentos que fazem o coração
+                        sorrir".
                     </p>
                 </div>
 
                 <div class="photo-frame">
-                    <img src="./assets/foto-amanda-01.jpg" alt="Foto da Amanda 1" />
+                    <img src="./assets/CIB_1040.jpg" alt="Foto da Amanda 1" />
                 </div>
             </div>
         </section>
@@ -183,7 +171,7 @@
             <div class="section-card section-card--map">
                 <div class="section-heading">
                     <p class="eyebrow">Localização</p>
-                    <h3>Como chegar</h3>
+                    <h3>Como chegar:</h3>
                     <p class="section-text">
                         O Campo Verde Festas e Eventos oferece um ambiente especial para esta
                         celebração, com espaço acolhedor e localização fácil de acessar. Confira o
@@ -228,14 +216,15 @@
         <section class="photo-showcase photo-showcase--reverse container reveal">
             <div class="photo-showcase__grid">
                 <div class="photo-frame">
-                    <img src="./assets/foto-amanda-02.jpg" alt="Foto da Amanda 2" />
+                    <img src="./assets/CIB_1132.jpg" alt="Foto da Amanda 2" />
                 </div>
 
                 <div class="photo-showcase__content">
-                    <p class="eyebrow">Brilho</p>
-                    <h3>Mais um espaço para destacar a Amanda</h3>
+                    <p class="eyebrow">Brilho:</p>
+                    <h3>Muitos sorrisos nos aguardam!</h3>
                     <p>
-                        Este espaço foi deixado para uma foto especial da Amanda.
+                        “Entre momentos simples e sorrisos sinceros, vou construindo memórias que quero levar comigo
+                        para sempre ✨”.
                     </p>
                 </div>
             </div>
@@ -245,7 +234,7 @@
             <div class="section-card">
                 <div class="section-heading">
                     <p class="eyebrow">Sugestões</p>
-                    <h3>Presentes</h3>
+                    <h3>Presentes:</h3>
                     <p class="section-text">
                         Sua presença já será muito especial. Para quem desejar presentear a Amanda,
                         seguem algumas ideias delicadas e úteis para esse novo ciclo.
@@ -278,7 +267,7 @@
                         <ul class="clean-list">
                             <li>Relógio smartwatch</li>
                             <li>Vale-presente</li>
-                            <li>Itens de decoração delicados</li>
+                            <li>Garrafa Térmica Stanley</li>
                             <li>Necessaire ou organizadores</li>
                             <li>Canecas, caixas ou lembranças personalizadas</li>
                         </ul>
@@ -291,15 +280,15 @@
         <section class="photo-showcase container reveal">
             <div class="photo-showcase__grid">
                 <div class="photo-showcase__content">
-                    <p class="eyebrow">Encanto</p>
-                    <h3>Uma terceira imagem.</h3>
+                    <p class="eyebrow">Encanto:</p>
+                    <h3>Ansiosa para viver esse momento!</h3>
                     <p>
-                        Este espaço foi deixado para uma foto especial da Amanda.
+                        "Meu sonho está prestes a se tornar realidade, conto os dias para viver esse momento".
                     </p>
                 </div>
 
                 <div class="photo-frame">
-                    <img src="./assets/foto-amanda-03.jpg" alt="Foto da Amanda 3" />
+                    <img src="./assets/CIB_1226.jpg" alt="Foto da Amanda 3" />
                 </div>
             </div>
         </section>
@@ -308,7 +297,7 @@
             <div class="section-card">
                 <div class="section-heading">
                     <p class="eyebrow">Presença</p>
-                    <h3>Confirme até 03 de julho</h3>
+                    <h3>Confirme até 03 de julho!</h3>
                     <p class="section-text">
                         A confirmação de presença será feita pelo WhatsApp. Ao tocar no botão abaixo,
                         você será levado diretamente para o contato da mãe da Amanda, com uma mensagem
